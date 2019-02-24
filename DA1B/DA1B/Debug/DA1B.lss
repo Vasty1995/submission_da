@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.7  c:\users\ykengne\Documents\Atmel Studio\7.0\DA1B\DA1B\main.asm Wed Feb 20 13:46:17 2019
+AVRASM ver. 2.2.7  c:\users\kengn\Documents\Atmel Studio\7.0\DA1B\DA1B\main.asm Sat Feb 23 22:09:47 2019
 
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.209\avrasm\inc\m328pdef.inc'
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.209\avrasm\inc\m328pdef.inc'
@@ -987,108 +987,203 @@ AVRASM ver. 2.2.7  c:\users\ykengne\Documents\Atmel Studio\7.0\DA1B\DA1B\main.as
                                  
                                  ; DA1B.asm
                                  ;
-                                 ; Created: 2/20/2019 9:53:23 AM
-                                 ; Author : YKengne
+                                 ; Created: 2/23/2019 9:39:29 PM
+                                 ; Author : kengn
                                  ;
                                  
                                  
                                  .org 0
+                                 
 000000 e050                      	ldi R21, 0			
+                                 
 000001 e0a0                      	ldi XL, 0x00		;X to 0x0200
+                                 
 000002 e0b2                      	ldi XH, 0x02
+                                 
 000003 e0c0                      	ldi YL, 0x00		;Y to 0x0400
+                                 
 000004 e0d4                      	ldi YH, 0x04
+                                 
 000005 e0e0                      	ldi ZL, 0x00		;Z to 0x0600
+                                 
 000006 e0f6                      	ldi ZH, 0x06
                                  
                                  FILL:
+                                 
 000007 e040                      	ldi R20, 0
+                                 
 000008 0f4a                      	add R20, XL	
+                                 
 000009 0f4b                      	add R20, XH			
+                                 
 00000a 934c                      	st X, R20			
+                                 
 00000b 95a3                      	inc XL				
-00000c 3faf                      	cpi XL, 255			
+                                 
+00000c 3faf                      	cpi XL, 255		;greater than 10 and less than 255	
+                                 
 00000d f490                      	brsh RESETX			
+                                 
                                  CONTINUE:
+                                 
 00000e 9553                      	inc R21				 
+                                 
 00000f 940c 0024                 	jmp DIVIDE			
+                                 
                                  DIVIDERET:
+                                 
 000011 3f5f                      	cpi R21, 255		
+                                 
 000012 f7a1                      	brne FILL			
+                                 
 000013 e050                      	ldi R21, 0			
+                                 
                                  FILLMORE:
+                                 
 000014 e040                      	ldi R20, 0
+                                 
 000015 0f4a                      	add R20, XL			
+                                 
 000016 0f4b                      	add R20, XH
+                                 
 000017 934c                      	st X, R20			
+                                 
 000018 95a3                      	inc XL				
+                                 
 000019 9553                      	inc R21				
+                                 
 00001a 940c 003c                 	jmp DIVIDE2			
+                                 
                                  DIVIDERET2:
+                                 
 00001c 325a                      	cpi R21, 42			
+                                 
 00001d f7b1                      	brne FILLMORE
+                                 
 00001e 940c 0054                 	jmp END				
                                  
+                                 
+                                 
                                  RESETX:
+                                 
 000020 e0a0                      	ldi XL, 0			
+                                 
 000021 95b3                      	inc XH				
+                                 
 000022 940c 000e                 	jmp CONTINUE
                                  
+                                 
+                                 
                                  DIVIDE:
-000024 e065                      	ldi R22, 5			
+                                 
+000024 e063                      	ldi R22, 3			
+                                 
 000025 e070                      	ldi R23, 0			
+                                 
 000026 2f84                      	mov R24, R20		
+                                 
                                  L1:
+                                 
 000027 9573                      	inc R23				
+                                 
 000028 1b46                      	sub R20, R22		
+                                 
 000029 f7e8                      	BRCC L1				
+                                 
 00002a 957a                      	dec R23				
+                                 
 00002b 0f46                      	add R20, R22		
+                                 
 00002c 3040                      	cpi R20, 0			
+                                 
 00002d f439                      	brne NOTDIV		
+                                 
 00002e 8388                      	st Y, R24			
+                                 
 00002f 95c3                      	inc YL				
+                                 
 000030 e090                      	ldi R25, 0	
+                                 
 000031 0f08                      	add R16, R24		
+                                 
 000032 1d1f                      	adc R17, R15		
+                                 
 000033 940c 0011                 	jmp DIVIDERET
                                  
+                                 
+                                 
                                  NOTDIV:
+                                 
 000035 8380                      	st Z, R24			
+                                 
 000036 95e3                      	inc ZL				
+                                 
 000037 e090                      	ldi R25, 0
+                                 
 000038 0f28                      	add R18, R24		
+                                 
 000039 1d3f                      	adc R19, R15		
+                                 
 00003a 940c 0011                 	jmp DIVIDERET
                                  
+                                 
+                                 
                                  	DIVIDE2:
-00003c e065                      	ldi R22, 5			
+                                 
+00003c e063                      	ldi R22, 3			
+                                 
 00003d e070                      	ldi R23, 0
+                                 
 00003e 2f84                      	mov R24, R20		
+                                 
                                  L2:
+                                 
 00003f 9573                      	inc R23				
+                                 
 000040 1b46                      	sub R20, R22		
+                                 
 000041 f7e8                      	BRCC L2				
+                                 
 000042 957a                      	dec R23				
+                                 
 000043 0f46                      	add R20, R22	
+                                 
 000044 3040                      	cpi R20, 0			
+                                 
 000045 f439                      	brne NOTDIV2		 
+                                 
 000046 8388                      	st Y, R24			 
+                                 
 000047 95c3                      	inc YL				
+                                 
 000048 e090                      	ldi R25, 0
+                                 
 000049 0f08                      	add R16, R24		
+                                 
 00004a 1f19                      	adc R17, R25		
+                                 
 00004b 940c 001c                 	jmp DIVIDERET2
                                  
+                                 
+                                 
                                  NOTDIV2:
+                                 
 00004d 8380                      	st Z, R24			
+                                 
 00004e 95e3                      	inc ZL				
+                                 
 00004f e090                      	ldi R25, 0
+                                 
 000050 0f28                      	add R18, R24		
+                                 
 000051 0f39                      	add R19, R25		
+                                 
 000052 940c 001c                 	jmp DIVIDERET2
                                  
+                                 
+                                 
                                  END:
+                                 
 
 
 RESOURCE USE INFORMATION
